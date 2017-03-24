@@ -34,7 +34,7 @@ PackagesDirectory = "packages"
 BundleFileName = 'omsagent-1.3.1-15.universal.x64.sh'
 
 # always use upgrade - will handle install if scx, omi are not installed or upgrade if they are
-InstallCommandTemplate = './{0} --upgrade --force'
+InstallCommandTemplate = './{0} --upgrade'
 UninstallCommandTemplate = './{0} --remove'
 OmsAdminWorkingDirectory = '/opt/microsoft/omsagent/bin'
 WorkspaceCheckCommand = './omsadmin.sh -l'
@@ -67,7 +67,7 @@ def main():
                 hutil = parse_context("Enable")
                 enable(hutil)
             elif re.match("^([-/]*)(update)", a):
-                dummy_command("Update", "success", "Update succeeded")
+                dummy_command("Update", "success", "Update succeeded") # upgrade is noop since omsagent.py->install() will be called everytime upgrade is done due to upgradeMode = "UpgradeWithInstall" set in HandlerManifest
     except Exception as e:
         exit_code = 1
         err_msg = ("Failed with error: {0}, {1}").format(e, traceback.format_exc())
@@ -98,6 +98,7 @@ def install(hutil):
 
     os.chmod(file_path, 100)
     cmd = InstallCommandTemplate.format(BundleFileName)
+	waagent.Log("Starting command %s --upgrade." %(BundleFileName))
     ScriptUtil.run_command(hutil, ScriptUtil.parse_args(cmd), file_directory, 'Install', ExtensionShortName, hutil.get_extension_version())
 
 
@@ -105,12 +106,13 @@ def uninstall(hutil):
     file_directory = os.path.join(os.getcwd(), PackagesDirectory)    
 
     cmd = UninstallCommandTemplate.format(BundleFileName)
+	waagent.Log("Starting command %s --remove." %(BundleFileName))
     ScriptUtil.run_command(hutil, ScriptUtil.parse_args(cmd), file_directory, 'Uninstall', ExtensionShortName, hutil.get_extension_version())
 
 
 def enable(hutil):
     hutil.exit_if_enabled()
-
+    waagent.Log("Handler not enabled. Starting onboarding.")
     public_settings = hutil.get_public_settings()
     protected_settings = hutil.get_protected_settings()
     if public_settings is None:
