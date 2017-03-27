@@ -98,7 +98,7 @@ def install(hutil):
 
     os.chmod(file_path, 100)
     cmd = InstallCommandTemplate.format(BundleFileName)
-	waagent.Log("Starting command %s --upgrade." %(BundleFileName))
+    waagent.Log("Starting command %s --upgrade." %(BundleFileName))
     ScriptUtil.run_command(hutil, ScriptUtil.parse_args(cmd), file_directory, 'Install', ExtensionShortName, hutil.get_extension_version())
 
 
@@ -106,12 +106,11 @@ def uninstall(hutil):
     file_directory = os.path.join(os.getcwd(), PackagesDirectory)    
 
     cmd = UninstallCommandTemplate.format(BundleFileName)
-	waagent.Log("Starting command %s --remove." %(BundleFileName))
+    waagent.Log("Starting command %s --remove." %(BundleFileName))
     ScriptUtil.run_command(hutil, ScriptUtil.parse_args(cmd), file_directory, 'Uninstall', ExtensionShortName, hutil.get_extension_version())
 
 
 def enable(hutil):
-    
     waagent.Log("Handler not enabled. Starting onboarding.")
     public_settings = hutil.get_public_settings()
     protected_settings = hutil.get_protected_settings()
