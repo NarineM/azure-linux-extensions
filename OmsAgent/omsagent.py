@@ -111,7 +111,7 @@ def uninstall(hutil):
 
 
 def enable(hutil):
-    hutil.exit_if_enabled()
+    
     waagent.Log("Handler not enabled. Starting onboarding.")
     public_settings = hutil.get_public_settings()
     protected_settings = hutil.get_protected_settings()
