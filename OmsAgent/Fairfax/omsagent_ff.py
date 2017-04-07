@@ -34,7 +34,7 @@ PackagesDirectory = "packages"
 BundleFileName = 'omsagent-1.3.1-15.universal.x64.sh'
 
 # always use upgrade - will handle install if scx, omi are not installed or upgrade if they are
-InstallCommandTemplate = './{0} --upgrade --force'
+InstallCommandTemplate = './{0} --upgrade'
 UninstallCommandTemplate = './{0} --remove'
 OmsAdminWorkingDirectory = '/opt/microsoft/omsagent/bin'
 WorkspaceCheckCommand = './omsadmin.sh -l'
