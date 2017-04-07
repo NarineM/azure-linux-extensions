@@ -108,9 +108,7 @@ def uninstall(hutil):
     ScriptUtil.run_command(hutil, ScriptUtil.parse_args(cmd), file_directory, 'Uninstall', ExtensionShortName, hutil.get_extension_version())
 
 
-def enable(hutil):
-    hutil.exit_if_enabled()
-
+def enable(hutil):    
     public_settings = hutil.get_public_settings()
     protected_settings = hutil.get_protected_settings()
     if public_settings is None:
